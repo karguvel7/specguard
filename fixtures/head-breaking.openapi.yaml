@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: SpecGuard Demo API
+  version: 2.0.0
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+            maximum: 50
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [available, sold]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: Bad request
+    post:
+      operationId: createPet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetInput'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+  /pets/{petId}:
+    get:
+      operationId: getPet
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '404':
+          description: Not found
+    delete:
+      operationId: deletePet
+      deprecated: true
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+  /legacy/report:
+    get:
+      operationId: legacyReport
+      deprecated: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+components:
+  schemas:
+    Pet:
+      type: object
+      required: [id, name, tag]
+      properties:
+        id:
+          type: string
+        name:
+          type: integer
+        tag:
+          type: string
+    PetInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          maxLength: 32
+          pattern: '^[a-z]+$'
+        tag:
+          type: string

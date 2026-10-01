@@ -1,0 +1,132 @@
+openapi: 3.1.0
+info:
+  title: SpecGuard Demo API
+  version: 1.1.0
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: number
+            maximum: 200
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [available, pending, sold, reserved]
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '400':
+          description: Bad request
+        '429':
+          description: Rate limited
+    post:
+      operationId: createPet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetInput'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+  /pets/{petId}:
+    get:
+      operationId: getPet
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fields
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '404':
+          description: Not found
+    delete:
+      operationId: deletePet
+      deprecated: true
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+  /legacy/report:
+    get:
+      operationId: legacyReport
+      deprecated: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  notes:
+                    type: string
+  /health:
+    get:
+      operationId: healthCheck
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Pet:
+      type: object
+      required: [id, name]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          maxLength: 64
+        tag:
+          type: string
+        color:
+          type: string
+    PetInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 128
+        tag:
+          type: string
+        color:
+          type: string

@@ -1,0 +1,36 @@
+name: SpecGuard OpenAPI check
+description: Detect breaking changes between two OpenAPI 3.0/3.1 documents
+branding:
+  icon: shield
+  color: blue
+inputs:
+  base:
+    description: Base spec path (relative to repository root)
+    required: true
+  head:
+    description: Head spec path (relative to repository root)
+    required: true
+  format:
+    description: Report format (text or json)
+    required: false
+    default: text
+  fail-on:
+    description: Fail threshold (error, warning, or never)
+    required: false
+    default: error
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: npm
+    - run: npm ci && npm run build
+      shell: bash
+    - run: |
+        node dist/cli.js check \
+          --base "${{ inputs.base }}" \
+          --head "${{ inputs.head }}" \
+          --format "${{ inputs.format }}" \
+          --fail-on "${{ inputs.fail-on }}"
+      shell: bash

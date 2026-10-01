@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SpecGuard — OpenAPI breaking-change detector</title>
+    <meta
+      name="description"
+      content="Detect OpenAPI breaking changes in CI before you ship."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0f1419;
+        --fg: #e7ecf3;
+        --accent: #3b82f6;
+        --muted: #94a3b8;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f8fafc;
+          --fg: #0f172a;
+          --muted: #64748b;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.6;
+      }
+      header {
+        padding: 3rem 1.5rem 2rem;
+        text-align: center;
+        border-bottom: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+      }
+      .tagline {
+        color: var(--muted);
+        max-width: 40rem;
+        margin: 0 auto 1.5rem;
+      }
+      .cta {
+        display: inline-flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      a.button {
+        background: var(--accent);
+        color: #fff;
+        text-decoration: none;
+        padding: 0.65rem 1.1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+      }
+      a.button.secondary {
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+      }
+      main {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+      pre {
+        background: color-mix(in srgb, var(--fg) 8%, transparent);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        font-size: 0.9rem;
+      }
+      footer {
+        text-align: center;
+        color: var(--muted);
+        padding: 2rem 1rem 3rem;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SpecGuard</h1>
+      <p class="tagline">
+        Diff two OpenAPI 3.0 or 3.1 specs and fail CI when the change breaks API
+        clients. TypeScript library, CLI, GitHub Action, and Docker image — no
+        hosted service required.
+      </p>
+      <div class="cta">
+        <a
+          class="button"
+          href="https://github.com/karguvel7/specguard"
+          >View on GitHub</a
+        >
+        <a
+          class="button secondary"
+          href="https://github.com/karguvel7/specguard#install"
+          >Get started</a
+        >
+      </div>
+    </header>
+    <main>
+      <h2>Quick start</h2>
+      <pre><code>npm install
+npm run build
+npx specguard check \
+  --base fixtures/base.openapi.yaml \
+  --head fixtures/head-breaking.openapi.yaml</code></pre>
+      <h2>What it checks</h2>
+      <ul>
+        <li>Removed paths, operations, and response status codes</li>
+        <li>Schema type, enum, and constraint changes with request vs response rules</li>
+        <li>New required parameters and properties</li>
+        <li>Local <code>$ref</code> resolution and <code>allOf</code> merging</li>
+      </ul>
+      <h2>Links</h2>
+      <ul>
+        <li>
+          <a href="https://github.com/karguvel7/specguard/blob/main/README.md"
+            >README</a
+          >
+        </li>
+        <li>
+          <a href="https://github.com/karguvel7/specguard/blob/main/PROJECT_SUMMARY.md"
+            >Project summary</a
+          >
+        </li>
+      </ul>
+    </main>
+    <footer>
+      MIT License ·
+      <a href="https://github.com/karguvel7/specguard">karguvel7/specguard</a>
+    </footer>
+  </body>
+</html>
