@@ -72,10 +72,11 @@ describe('normalizeDocument', () => {
       },
     };
     const norm = normalizeDocument(doc);
-    const schema = (
-      (norm.paths as Record<string, Record<string, Record<string, Record<string, Record<string, unknown>>>>>)['/items']
-        .get.responses['200'].content['application/json'].schema as Record<string, unknown>
-    );
+    const getOp = (norm.paths as Record<string, Record<string, unknown>>)['/items']
+      .get as Record<string, unknown>;
+    const responses = getOp.responses as Record<string, Record<string, unknown>>;
+    const content = responses['200'].content as Record<string, Record<string, unknown>>;
+    const schema = content['application/json'].schema as Record<string, unknown>;
     expect(schema.type).toBe('object');
     expect(schema.$ref).toBeUndefined();
   });
